@@ -8,9 +8,9 @@ import (
 )
 
 type ProductCategory interface {
-	Save(ctx context.Context, tx sql.Tx, product domain.Product) domain.Product
-	Update(ctx context.Context, tx sql.Tx, product domain.Product) domain.Product
-	Delete(ctx context.Context, tx sql.Tx, product domain.Product)
-	FindById(ctx context.Context, tx sql.Tx, productId int) domain.Product
-	Find(ctx context.Context, tx sql.Tx) []domain.Product
+	Save(ctx context.Context, tx *sql.Tx, product domain.Product) domain.Product
+	Update(ctx context.Context, tx *sql.Tx, product domain.Product) domain.Product
+	Delete(ctx context.Context, tx *sql.Tx, product domain.Product)
+	FindById(ctx context.Context, tx *sql.Tx, productId int) (domain.Product, error)
+	Find(ctx context.Context, tx *sql.Tx) []domain.Product
 }
