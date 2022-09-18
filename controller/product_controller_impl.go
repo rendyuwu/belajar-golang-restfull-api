@@ -28,6 +28,12 @@ func (controller *ProductControllerImpl) Create(w http.ResponseWriter, r *http.R
 	helper.WriteToResponseBody(w, webResponse)
 }
 
+func NewProductController(categoryService service.CategoryService) CategoryController {
+	return &CategoryControllerImpl{
+		CategoryService: categoryService,
+	}
+}
+
 func (controller *ProductControllerImpl) Update(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	productUpdateRequest := web.ProductUpdateRequest{}
 	helper.ReadFromRequestBody(r, &productUpdateRequest)
