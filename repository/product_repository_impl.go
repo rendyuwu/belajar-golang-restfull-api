@@ -11,6 +11,10 @@ import (
 
 type ProductRepositoryImpl struct{}
 
+func NewProductRepository() ProductRepository {
+	return &ProductRepositoryImpl{}
+}
+
 func (repository *ProductRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, product domain.Product) domain.Product {
 	SQL := "INSERT INTO product(name, category, description, image_url) VALUES(?, ?, ?, ?)"
 	result, err := tx.ExecContext(ctx, SQL, product.Name, product.Category, product.Description, product.ImageURL)
