@@ -8,7 +8,9 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"github.com/rendyuwu/belajar-golang-restfull-api/app"
 	"github.com/rendyuwu/belajar-golang-restfull-api/controller"
+	"github.com/rendyuwu/belajar-golang-restfull-api/exception"
 	"github.com/rendyuwu/belajar-golang-restfull-api/helper"
+	"github.com/rendyuwu/belajar-golang-restfull-api/middleware"
 	"github.com/rendyuwu/belajar-golang-restfull-api/repository"
 	"github.com/rendyuwu/belajar-golang-restfull-api/service"
 )
@@ -42,9 +44,12 @@ func main() {
 	router.PUT("/api/v1/categories/:categoryId", categoryController.Update)
 	router.DELETE("/api/v1/categories/:categoryId", categoryController.Delete)
 
+	// error handler
+	router.PanicHandler = exception.ErrorHandler
+
 	server := http.Server{
 		Addr:    "localhost:3000",
-		Handler: router,
+		Handler: middleware.NewAuthMiddleware(router),
 	}
 
 	err := server.ListenAndServe()

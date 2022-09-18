@@ -5,6 +5,7 @@ import (
 	"database/sql"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/rendyuwu/belajar-golang-restfull-api/exception"
 	"github.com/rendyuwu/belajar-golang-restfull-api/helper"
 	"github.com/rendyuwu/belajar-golang-restfull-api/model/domain"
 	"github.com/rendyuwu/belajar-golang-restfull-api/model/web"
@@ -53,7 +54,9 @@ func (service *ProductServiceImpl) Update(ctx context.Context, request web.Produ
 	defer helper.CommitOrRollback(tx)
 
 	product, err := service.ProductRepository.FindById(ctx, tx, request.Id)
-	helper.PanicIfError(err)
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
 
 	product.Name = request.Name
 	product.Category = request.Category
@@ -70,7 +73,9 @@ func (service *ProductServiceImpl) Delete(ctx context.Context, productId int) {
 	defer helper.CommitOrRollback(tx)
 
 	product, err := service.ProductRepository.FindById(ctx, tx, productId)
-	helper.PanicIfError(err)
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
 
 	service.ProductRepository.Delete(ctx, tx, product)
 }
@@ -81,7 +86,9 @@ func (service *ProductServiceImpl) FindById(ctx context.Context, productId int) 
 	defer helper.CommitOrRollback(tx)
 
 	product, err := service.ProductRepository.FindById(ctx, tx, productId)
-	helper.PanicIfError(err)
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
 
 	return helper.ToProductResponse(product)
 }
