@@ -28,9 +28,9 @@ func (controller *ProductControllerImpl) Create(w http.ResponseWriter, r *http.R
 	helper.WriteToResponseBody(w, webResponse)
 }
 
-func NewProductController(categoryService service.CategoryService) CategoryController {
-	return &CategoryControllerImpl{
-		CategoryService: categoryService,
+func NewProductController(productService service.ProductService) ProductController {
+	return &ProductControllerImpl{
+		ProductService: productService,
 	}
 }
 

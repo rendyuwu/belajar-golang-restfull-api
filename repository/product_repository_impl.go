@@ -22,7 +22,6 @@ func (repository *ProductRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, p
 
 	id, err := result.LastInsertId()
 	helper.PanicIfError(err)
-
 	product.Id = int(id)
 	return product
 }
@@ -45,10 +44,11 @@ func (repository *ProductRepositoryImpl) FindById(ctx context.Context, tx *sql.T
 	SQL := "SELECT id, name, category, description, image_url FROM product WHERE id = ?"
 	rows, err := tx.QueryContext(ctx, SQL, productId)
 	helper.PanicIfError(err)
+	defer rows.Close()
 
 	product := domain.Product{}
 	if rows.Next() {
-		err := rows.Scan(&productId, &product.Name, &product.Category, &product.Description, &product.ImageURL)
+		err := rows.Scan(&product.Id, &product.Name, &product.Category, &product.Description, &product.ImageURL)
 		helper.PanicIfError(err)
 		return product, nil
 	} else {
@@ -60,11 +60,12 @@ func (repository *ProductRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx
 	SQL := "SELECT id, name, category, description, image_url FROM product"
 	rows, err := tx.QueryContext(ctx, SQL)
 	helper.PanicIfError(err)
+	defer rows.Close()
 
 	var products []domain.Product
 	for rows.Next() {
 		product := domain.Product{}
-		err := rows.Scan(&product.Id, &product.Name)
+		err := rows.Scan(&product.Id, &product.Name, &product.Category, &product.Description, &product.ImageURL)
 		helper.PanicIfError(err)
 		products = append(products, product)
 	}

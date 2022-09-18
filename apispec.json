@@ -467,7 +467,7 @@
                 }
             }
         },
-        "/category/{categoryId}": {
+        "/categories/{categoryId}": {
             "get": {
                 "security": [
                     {

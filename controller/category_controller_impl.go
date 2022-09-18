@@ -66,7 +66,7 @@ func (controller *CategoryControllerImpl) Delete(w http.ResponseWriter, r *http.
 }
 
 func (controller *CategoryControllerImpl) FindById(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	id, err := strconv.Atoi(p.ByName("cayegoryId"))
+	id, err := strconv.Atoi(p.ByName("categoryId"))
 	helper.PanicIfError(err)
 
 	categoryResponse := controller.CategoryService.FindById(r.Context(), id)
